@@ -33,7 +33,12 @@ exports.post = async (req, res) => {
 exports.getAll = async (req, res) => {
     try {
         var data = await repository.get();
-        res.status(200).send(data);
+        var  qtdUser = await User.count();
+        
+        res.status(200).send({
+            data: data,
+            QuantidadeDeUsuarios: qtdUser
+        })
     } catch (error) {
         res.status(500).send({
             message: "Falha na requisição",
@@ -93,7 +98,7 @@ exports.delete = async (req, res) =>{
 };
 
 exports.login = async (req, res) => {
-    const { email, password } = req.body;
+    var { email, password } = req.body;
   
     try {
       const user = await repository.login(email, password);
